@@ -2,6 +2,7 @@
 
 #include <string>
 #include <engine/core/log/LogOutput.h>
+#include <engine/core/editor/editor.h>
 #include "ProjectMgr.h"
 #include "ConfigMgr.h"
 #include "IInputController.h"
@@ -15,13 +16,10 @@ namespace Studio
 	class ProjectWnd;
 	class RenderWindow;
 	class LogPanel;
-	class AStudio
+	class AStudio : public Echo::Editor
 	{
 	public:
 		~AStudio();
-
-		// 命令行模式初始化
-		AStudio(const char* inputProject);
 
 		// instance
 		static AStudio* instance();
@@ -79,6 +77,20 @@ namespace Studio
 
 		// 打开项目文件
 		void OpenProject( const char* fileName);
+
+	public:
+		// show bottom panel
+		virtual void showBottomPanel(Echo::BottomPanelTab* bottomPanel) override;
+
+	public:
+		// select a node object
+		virtual const Echo::String selectANodeObject()override;
+
+		// select a setting object
+		virtual const Echo::String selectASettingObject() override;
+
+		// select a resource object
+		virtual const Echo::String selectAResObject() override;
 
 	private:
 		AStudio();

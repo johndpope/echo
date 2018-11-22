@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/core/Base/EchoDef.h"
+#include "engine/core/Base/echo_def.h"
 #include "engine/core/memory/MemAllocDef.h"
 
 namespace Echo
@@ -34,7 +34,7 @@ namespace Echo
 
 		void deleteObj(T* obj)
 		{
-			i32 idx = obj - m_objs;
+			i32 idx = static_cast<i32>(obj - m_objs);
 			m_frees.push_back(idx);
 		}
 

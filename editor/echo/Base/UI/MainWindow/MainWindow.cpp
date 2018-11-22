@@ -9,7 +9,6 @@
 #include <QShortcut>
 #include <QMdiArea>
 #include <QComboBox>
-#include "TimelinePanel.h"
 #include "DebuggerPanel.h"
 #include "EchoEngine.h"
 #include "QResSelect.h"
@@ -19,6 +18,7 @@
 #include "ProjectWnd.h"
 #include "PathChooseDialog.h"
 #include "RenderWindow.h"
+#include "About.h"
 #include <QTimer>
 #include <engine/core/util/PathUtil.h>
 #include <engine/core/io/IO.h>
@@ -34,6 +34,7 @@ namespace Studio
 		, m_resPanel(nullptr)
 		, m_gameProcess(nullptr)
 		, m_scriptEditorPanel(nullptr)
+		, m_aboutWindow(nullptr)
 	{
 		setupUi( this);
 
@@ -58,7 +59,9 @@ namespace Studio
 		QObject::connect(m_actionPlayGame, SIGNAL(triggered(bool)), this, SLOT(onPlayGame()));
 		QObject::connect(m_actionStopGame, SIGNAL(triggered(bool)), &m_gameProcess, SLOT(terminate()));
 		QObject::connect(m_actionExitEditor, SIGNAL(triggered(bool)), this, SLOT(close()));
-		QObject::connect(m_actionHelp, SIGNAL(triggered(bool)), this, SLOT(onOpenHelpDialog()));
+		QObject::connect(m_actionApi, SIGNAL(triggered(bool)), this, SLOT(onOpenHelpDialog()));
+		QObject::connect(m_actionDocumentation, SIGNAL(triggered(bool)), this, SLOT(onOpenWiki()));
+		QObject::connect(m_actionAbout, SIGNAL(triggered(bool)), this, SLOT(onAbout()));
 
 		// add combox, switch 2D,3D,Script etc.
 		m_subEditComboBox = new QComboBox(m_toolBar);
@@ -147,6 +150,9 @@ namespace Studio
 		{
 			openLuaScript(currentEditLuaScript);
 		}
+
+		// save config
+		m_resPanel->recoverEditSettings();
 	}
 
 	// new scene
@@ -447,6 +453,23 @@ namespace Studio
 	void MainWindow::onOpenHelpDialog()
 	{
 		m_bottomPanel->setTabVisible( "DocumentPanel", !m_bottomPanel->isTabVisible("DocumentPanel"));
+	}
+
+	void MainWindow::onOpenWiki()
+	{
+		QString link = "https://github.com/blab-liuliang/echo/wiki";
+		QDesktopServices::openUrl(QUrl(link));
+	}
+
+	void MainWindow::onAbout()
+	{
+		if (!m_aboutWindow)
+		{
+			m_aboutWindow = new AboutWindow(this);
+			m_aboutWindow->setWindowModality(Qt::ApplicationModal);
+		}
+
+		m_aboutWindow->setVisible(true);
 	}
 
 	void MainWindow::onReadMsgFromGame()

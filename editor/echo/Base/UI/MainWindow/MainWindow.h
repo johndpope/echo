@@ -14,6 +14,7 @@ namespace Studio
 	class TimelinePanel;
 	class DebuggerPanel;
 	class BottomPanel;
+	class AboutWindow;
 	class MainWindow : public QMainWindow, public Ui_MainWindow
 	{
 		Q_OBJECT
@@ -36,6 +37,10 @@ namespace Studio
 
 		// open lua file for edit
 		void openLuaScript(const Echo::String& resPath);
+
+	public:
+		// panels
+		BottomPanel* getBottomPanel() { return m_bottomPanel; }
 
 	protected:
 		void closeEvent(QCloseEvent *event);
@@ -70,6 +75,12 @@ namespace Studio
 		// open help dialog
 		void onOpenHelpDialog();
 
+		// open wiki page
+		void onOpenWiki();
+
+		// open about dialog
+		void onAbout();
+
 		// on display script edit panel
 		void onScriptEditVisibleChanged();
 
@@ -89,7 +100,6 @@ namespace Studio
 		// recover edit settings
 		void recoverEditSettings();
 
-
 	protected:
 		QDockWidget*	m_renderPanel;
 		ResPanel*		m_resPanel;
@@ -98,5 +108,6 @@ namespace Studio
 		BottomPanel*	m_bottomPanel;
 		QProcess		m_gameProcess;
 		QComboBox*		m_subEditComboBox;
+		AboutWindow*	m_aboutWindow;
 	};
 }
